@@ -1,20 +1,5 @@
-@import "globals.css";
-
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, sans-serif;
-  background: var(--color-background);
-  color: var(--color-foreground);
-}
+@import "primeng/resources/themes/aura-dark-cyan/theme.css";
+@import "primeng/resources/primeng.min.css";
 
 .container {
   width: calc(100vw - 2rem);
