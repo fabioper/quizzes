@@ -11,11 +11,11 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - quiz-network
-
   api:
     build: ./api
     ports:
       - "8080:8080"
+      - "5005:5005"
     networks:
       - quiz-network
     depends_on:
@@ -25,7 +25,6 @@ services:
       - /app/target
     env_file:
       - ./api/.env
-
   web:
     build: ./web
     ports:
