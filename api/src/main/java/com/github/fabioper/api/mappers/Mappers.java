@@ -5,8 +5,6 @@ import com.github.fabioper.api.entities.Option;
 import com.github.fabioper.api.entities.Question;
 import com.github.fabioper.api.entities.Quiz;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Mappers {
@@ -26,14 +24,7 @@ public class Mappers {
 
     public static Quiz mapToQuizEntity(CreateQuizDTO dto) {
         var mappedQuestions = dto.questions().stream().map(Mappers::mapToQuestionEntity).toList();
-
         return new Quiz(dto.title(), mappedQuestions);
-    }
-
-    public static List<Question> mapToQuestionsEntities(Quiz quiz, List<UpdateQuestionDTO> questions) {
-        return questions.stream()
-            .map(questionDto -> mapToQuestionEntity(quiz, questionDto))
-            .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static Question mapToQuestionEntity(Quiz quiz, UpdateQuestionDTO questionDto) {
@@ -54,20 +45,20 @@ public class Mappers {
 
     public static Question mapToExistingQuestionEntity(Question question, UpdateQuestionDTO questionDto) {
         question.setStatement(questionDto.statement());
-        question.setOptions(mapToOptionsEntities(question, questionDto.options()));
-        return question;
-    }
 
-    public static List<Option> mapToOptionsEntities(Question question, List<UpdateOptionDTO> options) {
-        return options.stream()
+        var options = questionDto.options().stream()
             .map(optionDto -> mapToOptionEntity(question, optionDto))
             .collect(Collectors.toList());
+
+        question.setOptions(options);
+
+        return question;
     }
 
     public static Option mapToOptionEntity(Question question, UpdateOptionDTO optionDto) {
         return question.findOptionBy(optionDto.id())
             .map(option -> mapToExistingOptionEntity(option, optionDto))
-            .orElse(new Option(optionDto.text(), optionDto.isCorrect()));
+            .orElseGet(() -> new Option(optionDto.text(), optionDto.isCorrect()));
     }
 
     public static Option mapToExistingOptionEntity(Option option, UpdateOptionDTO optionDto) {
