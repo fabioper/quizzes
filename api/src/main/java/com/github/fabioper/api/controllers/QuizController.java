@@ -24,12 +24,22 @@ public class QuizController {
     }
 
     @PostMapping
-    public void create(@RequestBody CreateQuizDTO dto) {
-        quizService.createQuiz(dto);
+    public Quiz create(@RequestBody CreateQuizDTO dto) {
+        return quizService.createQuiz(dto);
     }
 
     @PutMapping("{id}")
     public Quiz update(@PathVariable UUID id, @RequestBody UpdateQuizDTO dto) {
         return quizService.updateQuiz(id, dto);
+    }
+
+    @GetMapping("{id}")
+    public Quiz findById(@PathVariable UUID id) {
+        return quizService.findById(id);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable UUID id) {
+        quizService.delete(id);
     }
 }

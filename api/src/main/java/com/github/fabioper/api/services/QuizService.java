@@ -22,9 +22,9 @@ public class QuizService {
         this.quizRepository = quizRepository;
     }
 
-    public void createQuiz(CreateQuizDTO dto) {
+    public Quiz createQuiz(CreateQuizDTO dto) {
         var newQuiz = mapToQuizEntity(dto);
-        quizRepository.save(newQuiz);
+        return quizRepository.save(newQuiz);
     }
 
     public Quiz updateQuiz(UUID id, UpdateQuizDTO dto) {
@@ -43,5 +43,14 @@ public class QuizService {
 
     public List<Quiz> listQuizzes() {
         return quizRepository.findAll();
+    }
+
+    public Quiz findById(UUID id) {
+        return quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+    }
+
+    public void delete(UUID id) {
+        var quizToBeDeleted = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+        quizRepository.delete(quizToBeDeleted);
     }
 }
