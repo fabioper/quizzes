@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -47,5 +48,11 @@ public class Quiz {
     public void setQuestions(List<Question> questions) {
         this.questions.clear();
         this.questions.addAll(questions);
+    }
+
+    public Optional<Question> findQuestionBy(UUID questionId) {
+        return questions.stream()
+            .filter(question -> question.getId().equals(questionId))
+            .findFirst();
     }
 }
