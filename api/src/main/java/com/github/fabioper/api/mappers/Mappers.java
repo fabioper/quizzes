@@ -4,6 +4,8 @@ import com.github.fabioper.api.dtos.*;
 import com.github.fabioper.api.entities.Option;
 import com.github.fabioper.api.entities.Question;
 import com.github.fabioper.api.entities.Quiz;
+import com.github.fabioper.api.exceptions.OptionNotFoundException;
+import com.github.fabioper.api.exceptions.QuestionNotFoundException;
 
 import java.util.stream.Collectors;
 
@@ -28,9 +30,13 @@ public class Mappers {
     }
 
     public static Question mapToQuestionEntity(Quiz quiz, UpdateQuestionDTO questionDto) {
+        if (questionDto.id() == null) {
+            return mapToNewQuestionEntity(questionDto);
+        }
+
         return quiz.findQuestionBy(questionDto.id())
             .map(question -> mapToExistingQuestionEntity(question, questionDto))
-            .orElseGet(() -> mapToNewQuestionEntity(questionDto));
+            .orElseThrow(QuestionNotFoundException::new);
     }
 
     public static Question mapToNewQuestionEntity(UpdateQuestionDTO questionDto) {
@@ -56,9 +62,13 @@ public class Mappers {
     }
 
     public static Option mapToOptionEntity(Question question, UpdateOptionDTO optionDto) {
+        if (optionDto.id() == null) {
+            return new Option(optionDto.text(), optionDto.isCorrect());
+        }
+
         return question.findOptionBy(optionDto.id())
             .map(option -> mapToExistingOptionEntity(option, optionDto))
-            .orElseGet(() -> new Option(optionDto.text(), optionDto.isCorrect()));
+            .orElseThrow(OptionNotFoundException::new);
     }
 
     public static Option mapToExistingOptionEntity(Option option, UpdateOptionDTO optionDto) {

@@ -24,7 +24,7 @@ public class QuizService {
 
     public Quiz createQuiz(CreateQuizDTO dto) {
         var newQuiz = mapToQuizEntity(dto);
-        return quizRepository.save(newQuiz);
+        return quizRepository.saveAndFlush(newQuiz);
     }
 
     public Quiz updateQuiz(UUID id, UpdateQuizDTO dto) {
@@ -38,7 +38,7 @@ public class QuizService {
 
         quizToBeUpdated.setQuestions(mappedQuestions);
 
-        return quizRepository.save(quizToBeUpdated);
+        return quizRepository.saveAndFlush(quizToBeUpdated);
     }
 
     public List<Quiz> listQuizzes() {
