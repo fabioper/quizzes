@@ -7,6 +7,7 @@ import com.github.fabioper.api.dtos.response.QuizListDTO;
 import com.github.fabioper.api.exceptions.QuizNotFoundException;
 import com.github.fabioper.api.mappers.Mappers;
 import com.github.fabioper.api.repositories.QuizRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,8 @@ public class QuizService {
     }
 
     public List<QuizListDTO> listQuizzes() {
-        var quizzes = quizRepository.findAll();
+        var sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
+        var quizzes = quizRepository.findAll(sortByCreatedDate);
         return quizzes.stream().map(Mappers::mapToListQuizzesDTO).toList();
     }
 
