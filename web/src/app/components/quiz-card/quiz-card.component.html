@@ -3,7 +3,10 @@
     <p-avatar label="Q" shape="circle" size="normal" />
   </header>
   <div class="quiz-content">
-    <h2 class="quiz-title">{{ quiz.title }}</h2>
+    <h2 class="quiz-title">
+      <a [routerLink]="'/quizzes/' + quiz.id">{{ quiz.title }}</a>
+    </h2>
+
     <p class="quiz-description">{{ quiz.description }}</p>
   </div>
   <footer class="quiz-footer">
@@ -14,6 +17,6 @@
       text
       icon="pi pi-eye"
     />
-    <p-button size="small" severity="primary" icon="pi pi-play" rounded />
+    <p-button severity="primary" icon="pi pi-play" rounded />
   </footer>
 </article>
