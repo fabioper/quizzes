@@ -46,29 +46,29 @@ public class Quiz {
         return title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
     public void setQuestions(List<Question> questions) {
         this.questions.clear();
         this.questions.addAll(questions);
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     public Optional<Question> findQuestionBy(UUID questionId) {

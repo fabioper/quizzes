@@ -37,6 +37,10 @@ public class Question {
         return statement;
     }
 
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
+
     public List<Option> getOptions() {
         return options;
     }
@@ -44,10 +48,6 @@ public class Question {
     public void setOptions(List<Option> options) {
         this.options.clear();
         this.options.addAll(options);
-    }
-
-    public void setStatement(String statement) {
-        this.statement = statement;
     }
 
     public Optional<Option> findOptionBy(UUID optionId) {

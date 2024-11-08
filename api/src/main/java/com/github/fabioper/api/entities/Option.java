@@ -36,12 +36,12 @@ public class Option {
         return text;
     }
 
-    public boolean isCorrect() {
-        return isCorrect;
-    }
-
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
     }
 
     public void setCorrect(boolean correct) {

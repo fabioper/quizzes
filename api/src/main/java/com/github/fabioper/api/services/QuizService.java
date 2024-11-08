@@ -5,7 +5,7 @@ import com.github.fabioper.api.dtos.request.UpdateQuizDTO;
 import com.github.fabioper.api.dtos.response.QuizDTO;
 import com.github.fabioper.api.dtos.response.QuizListDTO;
 import com.github.fabioper.api.exceptions.QuizNotFoundException;
-import com.github.fabioper.api.mappers.Mappers;
+import com.github.fabioper.api.mappers.QuizMapper;
 import com.github.fabioper.api.repositories.QuizRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ public class QuizService {
     }
 
     public QuizDTO createQuiz(CreateQuizDTO dto) {
-        var newQuiz = Mappers.mapToQuizEntity(dto);
+        var newQuiz = QuizMapper.mapToQuizEntity(dto);
         var savedQuiz = quizRepository.saveAndFlush(newQuiz);
-        return Mappers.mapToQuizDTO(savedQuiz);
+        return QuizMapper.mapToQuizDTO(savedQuiz);
     }
 
     public QuizDTO updateQuiz(UUID id, UpdateQuizDTO dto) {
@@ -32,20 +32,20 @@ public class QuizService {
             .findById(id)
             .orElseThrow(QuizNotFoundException::new);
 
-        var mappedQuiz = Mappers.mapToExistingQuizEntity(quizToBeUpdated, dto);
+        var mappedQuiz = QuizMapper.mapToExistingQuizEntity(quizToBeUpdated, dto);
         var updatedQuiz = quizRepository.saveAndFlush(mappedQuiz);
-        return Mappers.mapToQuizDTO(updatedQuiz);
+        return QuizMapper.mapToQuizDTO(updatedQuiz);
     }
 
     public List<QuizListDTO> listQuizzes() {
         var sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
         var quizzes = quizRepository.findAll(sortByCreatedDate);
-        return quizzes.stream().map(Mappers::mapToListQuizzesDTO).toList();
+        return quizzes.stream().map(QuizMapper::mapToListQuizzesDTO).toList();
     }
 
     public QuizDTO findById(UUID id) {
         return quizRepository.findById(id)
-            .map(Mappers::mapToQuizDTO)
+            .map(QuizMapper::mapToQuizDTO)
             .orElseThrow(QuizNotFoundException::new);
     }
 
