@@ -2,6 +2,7 @@ package com.github.fabioper.api.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,12 @@ public class Quiz {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private LocalDateTime createdDate;
+
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "quiz_id", nullable = false)
     private List<Question> questions = new ArrayList<>();
@@ -23,10 +30,12 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(String title, List<Question> questions) {
+    public Quiz(String title, String description, List<Question> questions) {
         this.id = UUID.randomUUID();
+        this.description = description;
         this.title = title;
         this.questions = questions;
+        this.createdDate = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -37,12 +46,24 @@ public class Quiz {
         return title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public List<Question> getQuestions() {
         return questions;
     }
 
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setQuestions(List<Question> questions) {

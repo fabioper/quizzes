@@ -1,9 +1,12 @@
 package com.github.fabioper.api.controllers;
 
-import com.github.fabioper.api.dtos.CreateQuizDTO;
-import com.github.fabioper.api.dtos.UpdateQuizDTO;
-import com.github.fabioper.api.entities.Quiz;
+import com.github.fabioper.api.dtos.request.CreateQuizDTO;
+import com.github.fabioper.api.dtos.request.UpdateQuizDTO;
+import com.github.fabioper.api.dtos.response.QuizDTO;
+import com.github.fabioper.api.dtos.response.QuizListDTO;
 import com.github.fabioper.api.services.QuizService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +22,23 @@ public class QuizController {
     }
 
     @GetMapping
-    public List<Quiz> listAll() {
+    public List<QuizListDTO> listAll() {
         return quizService.listQuizzes();
     }
 
     @PostMapping
-    public Quiz create(@RequestBody CreateQuizDTO dto) {
-        return quizService.createQuiz(dto);
+    public ResponseEntity<QuizDTO> create(@RequestBody CreateQuizDTO dto) {
+        var createdQuiz = quizService.createQuiz(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuiz);
     }
 
     @PutMapping("{id}")
-    public Quiz update(@PathVariable UUID id, @RequestBody UpdateQuizDTO dto) {
+    public QuizDTO update(@PathVariable UUID id, @RequestBody UpdateQuizDTO dto) {
         return quizService.updateQuiz(id, dto);
     }
 
     @GetMapping("{id}")
-    public Quiz findById(@PathVariable UUID id) {
+    public QuizDTO findById(@PathVariable UUID id) {
         return quizService.findById(id);
     }
 

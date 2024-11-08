@@ -1,8 +1,8 @@
-package com.github.fabioper.api.dtos;
+package com.github.fabioper.api.dtos.response;
 
 import java.util.UUID;
 
-public record UpdateOptionDTO(
+public record OptionDTO(
     UUID id,
     String text,
     boolean isCorrect

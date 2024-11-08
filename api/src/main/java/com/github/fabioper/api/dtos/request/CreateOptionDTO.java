@@ -1,4 +1,4 @@
-package com.github.fabioper.api.dtos;
+package com.github.fabioper.api.dtos.request;
 
 public record CreateOptionDTO(
     String text,

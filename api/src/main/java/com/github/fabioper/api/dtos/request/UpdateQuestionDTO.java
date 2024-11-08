@@ -1,4 +1,4 @@
-package com.github.fabioper.api.dtos;
+package com.github.fabioper.api.dtos.request;
 
 import java.util.List;
 import java.util.UUID;

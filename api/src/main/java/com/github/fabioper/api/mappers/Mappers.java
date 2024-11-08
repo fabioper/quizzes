@@ -1,6 +1,10 @@
 package com.github.fabioper.api.mappers;
 
-import com.github.fabioper.api.dtos.*;
+import com.github.fabioper.api.dtos.request.*;
+import com.github.fabioper.api.dtos.response.OptionDTO;
+import com.github.fabioper.api.dtos.response.QuestionDTO;
+import com.github.fabioper.api.dtos.response.QuizDTO;
+import com.github.fabioper.api.dtos.response.QuizListDTO;
 import com.github.fabioper.api.entities.Option;
 import com.github.fabioper.api.entities.Question;
 import com.github.fabioper.api.entities.Quiz;
@@ -10,6 +14,24 @@ import com.github.fabioper.api.exceptions.QuestionNotFoundException;
 import java.util.stream.Collectors;
 
 public class Mappers {
+    public static Quiz mapToQuizEntity(CreateQuizDTO dto) {
+        var mappedQuestions = dto.questions().stream().map(Mappers::mapToQuestionEntity).toList();
+        return new Quiz(dto.title(), dto.description(), mappedQuestions);
+    }
+
+    public static Quiz mapToExistingQuizEntity(Quiz existingQuiz, UpdateQuizDTO dto) {
+        existingQuiz.setTitle(dto.title());
+        existingQuiz.setDescription(dto.description());
+
+        var mappedQuestions = dto.questions().stream()
+            .map(questionDto -> mapToQuestionEntity(existingQuiz, questionDto))
+            .collect(Collectors.toList());
+
+        existingQuiz.setQuestions(mappedQuestions);
+
+        return existingQuiz;
+    }
+
     public static Question mapToQuestionEntity(CreateQuestionDTO questionDto) {
         var mappedOptions = questionDto
             .options()
@@ -22,11 +44,6 @@ public class Mappers {
 
     public static Option mapToOptionEntity(CreateOptionDTO optionDto) {
         return new Option(optionDto.text(), optionDto.isCorrect());
-    }
-
-    public static Quiz mapToQuizEntity(CreateQuizDTO dto) {
-        var mappedQuestions = dto.questions().stream().map(Mappers::mapToQuestionEntity).toList();
-        return new Quiz(dto.title(), mappedQuestions);
     }
 
     public static Question mapToQuestionEntity(Quiz quiz, UpdateQuestionDTO questionDto) {
@@ -75,5 +92,40 @@ public class Mappers {
         option.setText(optionDto.text());
         option.setCorrect(optionDto.isCorrect());
         return option;
+    }
+
+    public static QuizListDTO mapToListQuizzesDTO(Quiz quiz) {
+        return new QuizListDTO(
+            quiz.getId(),
+            quiz.getTitle(),
+            quiz.getDescription(),
+            quiz.getCreatedDate()
+        );
+    }
+
+    public static QuizDTO mapToQuizDTO(Quiz quiz) {
+        return new QuizDTO(
+            quiz.getId(),
+            quiz.getTitle(),
+            quiz.getDescription(),
+            quiz.getCreatedDate(),
+            quiz.getQuestions().stream().map(Mappers::mapToQuestionDTO).toList()
+        );
+    }
+
+    private static QuestionDTO mapToQuestionDTO(Question question) {
+        return new QuestionDTO(
+            question.getId(),
+            question.getStatement(),
+            question.getOptions().stream().map(Mappers::mapToOptionDTO).toList()
+        );
+    }
+
+    private static OptionDTO mapToOptionDTO(Option option) {
+        return new OptionDTO(
+            option.getId(),
+            option.getText(),
+            option.isCorrect()
+        );
     }
 }
