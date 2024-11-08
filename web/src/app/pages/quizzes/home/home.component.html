@@ -1,0 +1,13 @@
+<div class="container">
+  <header class="header">
+    <h1>Quizzes</h1>
+
+    <p-button label="Novo quiz" routerLink="/novo" />
+  </header>
+
+  <section class="quizzes">
+    @for (quiz of quizzes; track quiz) {
+      <app-quiz-card [quiz]="quiz" />
+    }
+  </section>
+</div>
