@@ -1,3 +1,26 @@
 <div class="container">
   <h1>Quizzes</h1>
+
+  <section class="quizzes">
+    @for (quiz of quizzes; track quiz) {
+      <article class="quiz">
+        <header class="quiz-header">
+          <p-avatar label="Q" shape="circle" size="large" />
+        </header>
+        <div class="quiz-content">
+          <h2 class="quiz-title">{{ quiz.title }}</h2>
+          <p class="quiz-description">{{ quiz.description }}</p>
+        </div>
+        <footer class="quiz-footer">
+          <p-button
+            label="Visualizar"
+            size="small"
+            severity="contrast"
+            outlined
+          />
+          <p-button label="Iniciar" size="small" severity="contrast" />
+        </footer>
+      </article>
+    }
+  </section>
 </div>

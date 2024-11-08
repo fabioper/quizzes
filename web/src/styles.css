@@ -7,3 +7,7 @@
   max-width: 960px;
   margin: 0 auto;
 }
+
+body {
+  background: var(--surface-100);
+}
