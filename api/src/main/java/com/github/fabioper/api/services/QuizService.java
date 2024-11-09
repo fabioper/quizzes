@@ -15,6 +15,8 @@ import java.util.UUID;
 
 @Service
 public class QuizService {
+    private final static Sort SORTED_BY_CREATION_DATE = Sort.by(Sort.Direction.DESC, "createdDate");
+
     private final QuizRepository quizRepository;
 
     public QuizService(QuizRepository quizRepository) {
@@ -38,8 +40,7 @@ public class QuizService {
     }
 
     public List<QuizListDTO> listQuizzes() {
-        var sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
-        var quizzes = quizRepository.findAll(sortByCreatedDate);
+        var quizzes = quizRepository.findAll(SORTED_BY_CREATION_DATE);
         return quizzes.stream().map(QuizMapper::mapToListQuizzesDTO).toList();
     }
 
