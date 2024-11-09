@@ -1,6 +1,6 @@
 <article class="quiz">
   <header class="quiz-header">
-    <p-avatar label="Q" shape="circle" size="normal" />
+    <p-avatar [icon]="userIcon" shape="circle" size="normal" />
   </header>
   <div class="quiz-content">
     <h2 class="quiz-title">
@@ -10,13 +10,16 @@
     <p class="quiz-description">{{ quiz.description }}</p>
   </div>
   <footer class="quiz-footer">
-    <p-button
-      label="Visualizar"
-      size="small"
-      severity="secondary"
-      text
-      icon="pi pi-eye"
-    />
-    <p-button severity="primary" icon="pi pi-play" rounded />
+    <time class="quiz-creation-date">{{ quiz.createdDate | date }}</time>
+    <div class="quiz-actions">
+      <p-button
+        severity="primary"
+        icon="pi pi-play"
+        size="small"
+        rounded
+        pTooltip="Iniciar sessão"
+        tooltipPosition="left"
+      />
+    </div>
   </footer>
 </article>

@@ -58,3 +58,13 @@
     margin: 0;
 }
 
+.quiz-creation-date {
+    font-size: .85rem;
+    color: var(--surface-500);
+}
+
+.quiz-actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}

@@ -6,13 +6,13 @@ import { QuizCardComponent } from '../../../components/quiz-card/quiz-card.compo
 import { RouterLink } from '@angular/router'
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-quizzes-listing',
   standalone: true,
   imports: [Button, AvatarModule, QuizCardComponent, RouterLink],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './quizzes-listing.component.html',
+  styleUrl: './quizzes-listing.component.css',
 })
-export class HomeComponent {
+export class QuizzesListingComponent {
   quizzes: QuizList[] = []
 
   constructor(private apiService: QuizService) {
