@@ -15,7 +15,9 @@ import java.util.UUID;
 
 @Service
 public class QuizService {
-    private final static Sort SORTED_BY_CREATION_DATE = Sort.by(Sort.Direction.DESC, "createdDate");
+    private final static Sort SORTED_BY_CREATION_DATE = Sort.by(
+        Sort.Direction.DESC, "createdDate"
+    );
 
     private final QuizRepository quizRepository;
 
