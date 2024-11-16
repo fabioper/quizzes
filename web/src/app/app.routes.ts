@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router'
 import { QuizzesListingComponent } from './pages/quizzes/quizzes-listing/quizzes-listing.component'
-import { NewQuizComponent } from './pages/quizzes/new-quiz/new-quiz.component'
+import { SessionComponent } from './pages/sessions/session/session.component'
 
 export const routes: Routes = [
   {
@@ -14,7 +14,7 @@ export const routes: Routes = [
     title: 'Quizzes',
   },
   {
-    path: 'novo',
-    component: NewQuizComponent,
+    path: 'sessions/:id',
+    component: SessionComponent,
   },
 ]

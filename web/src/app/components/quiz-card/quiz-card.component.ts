@@ -2,10 +2,15 @@ import { Component, Input } from '@angular/core'
 import { QuizList } from '../../services/quiz.service'
 import { AvatarModule } from 'primeng/avatar'
 import { Button } from 'primeng/button'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { DatePipe } from '@angular/common'
 import { PrimeIcons } from 'primeng/api'
 import { TooltipModule } from 'primeng/tooltip'
+import {
+  LaunchSessionRequest,
+  SessionsService,
+} from '../../services/sessions.service'
+import { UserService } from '../../user.service'
 
 @Component({
   selector: 'app-quiz-card',
@@ -19,4 +24,21 @@ export class QuizCardComponent {
   quiz!: QuizList
 
   userIcon = PrimeIcons.USER
+
+  constructor(
+    private userService: UserService,
+    private sessionsService: SessionsService,
+    private router: Router,
+  ) {}
+
+  launchSession(quiz: QuizList) {
+    const data: LaunchSessionRequest = {
+      quizId: quiz.id,
+      authorId: this.userService.getUserId(),
+    }
+
+    this.sessionsService.launchSession(data).subscribe(session => {
+      this.router.navigate([`/sessions/${session.id}`])
+    })
+  }
 }

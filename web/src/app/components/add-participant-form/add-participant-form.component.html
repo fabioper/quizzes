@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()">
+  <div class="input-group">
+    <input
+      type="text"
+      name="nickname"
+      id="nickname"
+      pInputText
+      [(ngModel)]="nickname"
+      placeholder="Nickname"
+    />
+
+    <p-button label="Entrar" type="submit" />
+  </div>
+</form>

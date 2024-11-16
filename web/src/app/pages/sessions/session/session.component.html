@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>Participantes</h1>
+
+  <ul>
+    @for (participant of liveSession?.participants; track participant) {
+      <li>{{ participant.nickname }}</li>
+    }
+  </ul>
+
+  @if (userIsAdmin) {
+    <p-button label="Iniciar quiz" (click)="initQuiz()" />
+  }
+</div>
+
+<p-dialog
+  header="Novo participante"
+  [visible]="showNewParticipantDialog"
+  [draggable]="false"
+  [closable]="false"
+  [blockScroll]="true"
+  [modal]="true"
+>
+  <app-add-participant-form
+    [sessionId]="liveSession?.id!"
+    (participantAdded)="closeNewParticipantDialog()"
+  />
+</p-dialog>
