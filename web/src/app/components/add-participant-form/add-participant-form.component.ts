@@ -7,6 +7,7 @@ import {
   SessionsService,
 } from '../../services/sessions.service'
 import { UserService } from '../../user.service'
+import { tap } from 'rxjs'
 
 @Component({
   selector: 'app-add-participant-form',
@@ -35,7 +36,9 @@ export class AddParticipantFormComponent {
       nickname: this.nickname,
     }
 
-    this.sessionsService.addParticipant(this.sessionId, newParticipant)
-    this.participantAdded.emit(newParticipant)
+    this.sessionsService
+      .addParticipant(this.sessionId, newParticipant)
+      .pipe(tap(() => this.participantAdded.emit(newParticipant)))
+      .subscribe()
   }
 }

@@ -62,9 +62,9 @@ export class SessionsService {
   }
 
   addParticipant(sessionId: string, participant: AddParticipantRequest) {
-    this.stompService.publish({
-      destination: `/app/sessions/${sessionId}/add-participant`,
-      body: JSON.stringify(participant),
-    })
+    return this.http.post(
+      this.endpoint + '/' + sessionId + '/participants',
+      participant,
+    )
   }
 }
