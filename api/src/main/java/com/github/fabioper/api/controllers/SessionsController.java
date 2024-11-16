@@ -1,5 +1,6 @@
 package com.github.fabioper.api.controllers;
 
+import com.github.fabioper.api.dtos.request.AddParticipantDTO;
 import com.github.fabioper.api.dtos.request.LaunchSessionDTO;
 import com.github.fabioper.api.dtos.response.LiveSessionDTO;
 import com.github.fabioper.api.services.SessionService;
@@ -26,5 +27,11 @@ public class SessionsController {
     @GetMapping("{id}")
     public LiveSessionDTO findById(@PathVariable UUID id) {
         return sessionService.findById(id);
+    }
+
+    @PostMapping("{id}/participants")
+    public ResponseEntity<Object> addParticipant(@PathVariable UUID id, @RequestBody AddParticipantDTO dto) {
+        sessionService.addParticipant(id, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
