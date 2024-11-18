@@ -17,33 +17,18 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class SessionService {
+public class LiveSessionService {
     private final QuizRepository quizRepository;
     private final LiveSessionRepository liveSessionRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public SessionService(
+    public LiveSessionService(
         QuizRepository quizRepository, LiveSessionRepository liveSessionRepository,
         SimpMessagingTemplate messagingTemplate
     ) {
         this.quizRepository = quizRepository;
         this.liveSessionRepository = liveSessionRepository;
         this.messagingTemplate = messagingTemplate;
-    }
-
-    private static LiveSessionDTO mapToLiveSessionDTO(LiveSession entity) {
-        return new LiveSessionDTO(
-            entity.getId(),
-            entity.getAuthorId(),
-            entity.getStatus().getLabel(),
-            entity.getParticipants()
-                .stream()
-                .map(participant -> new LiveSessionParticipantDTO(
-                    participant.getId(),
-                    participant.getNickname()
-                ))
-                .toList()
-        );
     }
 
     public LiveSessionDTO launchSession(LaunchSessionDTO dto) {
@@ -53,21 +38,22 @@ public class SessionService {
         var liveSession = new LiveSession(dto.authorId(), quiz);
 
         var savedLiveSession = liveSessionRepository.save(liveSession);
-        return mapToLiveSessionDTO(savedLiveSession);
+        return LiveSessionMapper.toDTO(savedLiveSession);
     }
 
     public LiveSessionDTO findById(UUID id) {
         return liveSessionRepository.findById(id)
-            .map(SessionService::mapToLiveSessionDTO)
-            .orElseThrow();
+            .map(LiveSessionMapper::toDTO)
+            .orElseThrow(LiveSessionNotFondException::new);
     }
 
-    public void addParticipant(UUID id, AddParticipantDTO dto) {
+    public LiveSessionParticipantDTO addParticipant(UUID id, AddParticipantDTO dto) {
         var liveSession = this.liveSessionRepository
             .findById(id)
             .orElseThrow(LiveSessionNotFondException::new);
 
-        liveSession.addParticipant(new LiveSessionParticipant(dto.id(), dto.nickname()));
+        var newParticipant = new LiveSessionParticipant(dto.id(), dto.nickname());
+        liveSession.addParticipant(newParticipant);
 
         var updatedSession = this.liveSessionRepository.save(liveSession);
 
@@ -75,5 +61,7 @@ public class SessionService {
             "/topic/sessions/" + id + "/updated",
             LiveSessionMapper.toDTO(updatedSession)
         );
+
+        return LiveSessionMapper.toDTO(newParticipant);
     }
 }

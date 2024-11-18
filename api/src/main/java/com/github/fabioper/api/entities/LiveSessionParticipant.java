@@ -16,6 +16,9 @@ public class LiveSessionParticipant {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
+    private int score = 0;
+
     public LiveSessionParticipant() {
     }
 
@@ -34,5 +37,13 @@ public class LiveSessionParticipant {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

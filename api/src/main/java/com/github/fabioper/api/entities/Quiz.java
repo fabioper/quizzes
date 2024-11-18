@@ -12,16 +12,16 @@ import java.util.UUID;
 @Table(name = "quizzes")
 public class Quiz {
     @Id
-    private UUID id;
+    private final UUID id = UUID.randomUUID();
+
+    @Column(nullable = false)
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
-    private LocalDateTime createdDate;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "quiz_id", nullable = false)
@@ -31,11 +31,9 @@ public class Quiz {
     }
 
     public Quiz(String title, String description, List<Question> questions) {
-        this.id = UUID.randomUUID();
         this.description = description;
         this.title = title;
         this.questions = questions;
-        this.createdDate = LocalDateTime.now();
     }
 
     public UUID getId() {

@@ -13,15 +13,16 @@ public class LiveSessionMapper {
             entity.getStatus().getLabel(),
             entity.getParticipants()
                 .stream()
-                .map(LiveSessionMapper::toParticipantDTO)
+                .map(LiveSessionMapper::toDTO)
                 .toList()
         );
     }
 
-    public static LiveSessionParticipantDTO toParticipantDTO(LiveSessionParticipant entity) {
+    public static LiveSessionParticipantDTO toDTO(LiveSessionParticipant entity) {
         return new LiveSessionParticipantDTO(
             entity.getId(),
-            entity.getNickname()
+            entity.getNickname(),
+            entity.getScore()
         );
     }
 }

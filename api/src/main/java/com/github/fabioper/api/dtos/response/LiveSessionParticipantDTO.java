@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record LiveSessionParticipantDTO(
     UUID id,
-    String nickname
+    String nickname,
+    int score
 ) {
 }
