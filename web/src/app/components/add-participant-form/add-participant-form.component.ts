@@ -3,7 +3,7 @@ import { Button } from 'primeng/button'
 import { InputTextModule } from 'primeng/inputtext'
 import { FormsModule } from '@angular/forms'
 import {
-  LiveSessionParticipant,
+  AddParticipantRequest,
   SessionsService,
 } from '../../services/sessions.service'
 import { UserService } from '../../user.service'
@@ -21,7 +21,7 @@ export class AddParticipantFormComponent {
   sessionId!: string
 
   @Output()
-  participantAdded = new EventEmitter<LiveSessionParticipant>()
+  participantAdded = new EventEmitter()
 
   nickname = ''
 
@@ -31,14 +31,14 @@ export class AddParticipantFormComponent {
   ) {}
 
   onSubmit() {
-    const newParticipant: LiveSessionParticipant = {
+    const newParticipant: AddParticipantRequest = {
       id: this.userService.getUserId(),
       nickname: this.nickname,
     }
 
     this.sessionsService
       .addParticipant(this.sessionId, newParticipant)
-      .pipe(tap(() => this.participantAdded.emit(newParticipant)))
+      .pipe(tap(() => this.participantAdded.emit()))
       .subscribe()
   }
 }
