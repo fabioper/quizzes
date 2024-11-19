@@ -8,7 +8,7 @@ import { switchMap, tap } from 'rxjs'
 import { Button } from 'primeng/button'
 import { DialogModule } from 'primeng/dialog'
 import { AddParticipantFormComponent } from '../../../components/add-participant-form/add-participant-form.component'
-import { UserService } from '../../../user.service'
+import { UserService } from '../../../services/user.service'
 
 @Component({
   selector: 'app-session',

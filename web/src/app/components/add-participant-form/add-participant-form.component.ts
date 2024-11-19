@@ -6,7 +6,7 @@ import {
   AddParticipantRequest,
   SessionsService,
 } from '../../services/sessions.service'
-import { UserService } from '../../user.service'
+import { UserService } from '../../services/user.service'
 import { tap } from 'rxjs'
 
 @Component({
