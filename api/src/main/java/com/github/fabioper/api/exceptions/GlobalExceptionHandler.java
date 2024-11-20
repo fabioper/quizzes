@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler({ QuizNotFoundException.class, QuestionNotFoundException.class, OptionNotFoundException.class })
-    public ResponseEntity<Object> handleQuizNotFoundException(RuntimeException exception) {
+    @ExceptionHandler({ ResourceNotFoundException.class })
+    public ResponseEntity<Object> handleQuizNotFoundException(ResourceNotFoundException exception) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(exception.getMessage());
+            .body(new ErrorDetails(exception.getMessage()));
     }
 }

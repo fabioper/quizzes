@@ -58,7 +58,9 @@ public class LiveSession {
         return quiz;
     }
 
-    public void addParticipant(LiveSessionParticipant participant) {
+    public LiveSessionParticipant addParticipant(UUID id, String nickname) {
+        var participant = new LiveSessionParticipant(id, nickname);
         this.participants.add(participant);
+        return participant;
     }
 }

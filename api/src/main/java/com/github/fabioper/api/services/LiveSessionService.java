@@ -5,7 +5,6 @@ import com.github.fabioper.api.dtos.request.LaunchSessionDTO;
 import com.github.fabioper.api.dtos.response.LiveSessionDTO;
 import com.github.fabioper.api.dtos.response.LiveSessionParticipantDTO;
 import com.github.fabioper.api.entities.LiveSession;
-import com.github.fabioper.api.entities.LiveSessionParticipant;
 import com.github.fabioper.api.exceptions.LiveSessionNotFondException;
 import com.github.fabioper.api.exceptions.QuizNotFoundException;
 import com.github.fabioper.api.mappers.LiveSessionMapper;
@@ -23,7 +22,8 @@ public class LiveSessionService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public LiveSessionService(
-        QuizRepository quizRepository, LiveSessionRepository liveSessionRepository,
+        QuizRepository quizRepository,
+        LiveSessionRepository liveSessionRepository,
         SimpMessagingTemplate messagingTemplate
     ) {
         this.quizRepository = quizRepository;
@@ -32,7 +32,8 @@ public class LiveSessionService {
     }
 
     public LiveSessionDTO launchSession(LaunchSessionDTO dto) {
-        var quiz = quizRepository.findById(dto.quizId())
+        var quiz = quizRepository
+            .findById(dto.quizId())
             .orElseThrow(QuizNotFoundException::new);
 
         var liveSession = new LiveSession(dto.authorId(), quiz);
@@ -52,16 +53,13 @@ public class LiveSessionService {
             .findById(id)
             .orElseThrow(LiveSessionNotFondException::new);
 
-        var newParticipant = new LiveSessionParticipant(dto.id(), dto.nickname());
-        liveSession.addParticipant(newParticipant);
-
+        var participant = liveSession.addParticipant(dto.id(), dto.nickname());
         var updatedSession = this.liveSessionRepository.save(liveSession);
 
-        this.messagingTemplate.convertAndSend(
-            "/topic/sessions/" + id + "/updated",
-            LiveSessionMapper.toDTO(updatedSession)
-        );
+        var topicDestination = "/topic/sessions/" + id + "/updated";
+        var updatedSessionDTO = LiveSessionMapper.toDTO(updatedSession);
+        this.messagingTemplate.convertAndSend(topicDestination, updatedSessionDTO);
 
-        return LiveSessionMapper.toDTO(newParticipant);
+        return LiveSessionMapper.toDTO(participant);
     }
 }
