@@ -1,4 +1,6 @@
 <div class="container">
+  <p-messages [(value)]="messages" [enableService]="false" />
+
   <h1>Participantes</h1>
 
   <ul>
@@ -8,20 +10,20 @@
   </ul>
 
   @if (userIsAdmin) {
-    <p-button label="Iniciar quiz" (click)="initQuiz()" />
+    <p-button label="Iniciar quiz" (click)="startQuiz()" />
   }
 </div>
 
 <p-dialog
-  header="Novo participante"
-  [visible]="showNewParticipantDialog"
-  [draggable]="false"
-  [closable]="false"
   [blockScroll]="true"
+  [closable]="false"
+  [draggable]="false"
   [modal]="true"
+  [visible]="showNewParticipantDialog"
+  header="Novo participante"
 >
   <app-add-participant-form
-    [sessionId]="liveSession?.id!"
     (participantAdded)="closeNewParticipantDialog()"
+    [sessionId]="liveSession?.id!"
   />
 </p-dialog>
